@@ -5,6 +5,7 @@ hydra-core
 lightning
 loguru
 opencv-python
+numpy==1.26.4
 Pillow
 pycocotools
 requests
