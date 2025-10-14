@@ -257,6 +257,14 @@ def setup_logger(logger_name, quite=False):
     coco_logger.setLevel(logging.ERROR)
 
 from IPython.display import clear_output
+
+def clear_terminal():
+        try:
+            clear_output(wait=True)
+        except Exception:
+            import os
+            os.system('cls' if os.name == 'nt' else 'clear')
+
 def setup(cfg: Config):
     quite = hasattr(cfg, "quite")
     setup_logger("lightning.fabric", quite=quite)
@@ -279,7 +287,7 @@ def setup(cfg: Config):
     if quite:
         logger.setLevel(logging.ERROR)
         return progress, loggers, save_path
-
+    clear_terminal()
     progress.append(YOLORichProgressBar())
     progress.append(YOLORichModelSummary())
     progress.append(ImageLogger())
