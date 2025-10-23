@@ -6,28 +6,24 @@ defaults:
 epoch: 100
 
 data:
-  batch_size: 16
+  batch_size: 32
   image_size: ${image_size}
   cpu_num: ${cpu_num}
   shuffle: True
   pin_memory: True
   data_augment:
-    Mosaic: 0.2
-    # MixUp: 1
-    # HorizontalFlip: 0.5
-    RandomCrop: 0.2
-    RemoveOutliers: 1e-8
+    RandomCrop: 0.05
 
 optimizer:
-  type: Adam
+  type: AdamW
   args:
     lr: 0.001
     weight_decay: 0.0005
 
 loss:
   objective:
-    BCELoss: 0.5
-    BoxLoss: 7.5
+    BCELoss: 2.0
+    BoxLoss: 4.0
     DFLoss: 1.5
   aux:
     0.25
@@ -39,7 +35,7 @@ loss:
       cls: 0.5
 
 scheduler:
-  type: LinearLR
+  type: cosine
   warmup:
     epochs: 3.0
   args:
