@@ -6,30 +6,24 @@ defaults:
 epoch: 100
 
 data:
-  batch_size: 16
+  batch_size: 32
   image_size: ${image_size}
   cpu_num: ${cpu_num}
   shuffle: True
   pin_memory: True
   data_augment:
-    Mosaic: 1
-    # MixUp: 1
-    # HorizontalFlip: 0.5
-    RandomCrop: 1
-    RemoveOutliers: 1e-8
+    RandomCrop: 0.05
 
 optimizer:
-  type: SGD
+  type: AdamW
   args:
-    lr: 0.01
+    lr: 0.001
     weight_decay: 0.0005
-    momentum: 0.937
-    nesterov: true
 
 loss:
   objective:
-    BCELoss: 0.5
-    BoxLoss: 7.5
+    BCELoss: 2.0
+    BoxLoss: 4.0
     DFLoss: 1.5
   aux:
     0.25
@@ -41,13 +35,12 @@ loss:
       cls: 0.5
 
 scheduler:
-  type: LinearLR
+  type: CosineAnnealingLR
   warmup:
     epochs: 3.0
   args:
-    total_iters: ${task.epoch}
-    start_factor: 1
-    end_factor: 0.01
+    T_max: ${task.epoch}
+    eta_min: 0.00001
 
 ema:
   enable: true

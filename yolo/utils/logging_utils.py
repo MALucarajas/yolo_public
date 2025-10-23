@@ -21,7 +21,7 @@ import numpy as np
 import torch
 import wandb
 from lightning import LightningModule, Trainer, seed_everything
-from lightning.pytorch.callbacks import Callback, RichModelSummary, RichProgressBar
+from lightning.pytorch.callbacks import Callback, RichModelSummary, RichProgressBar, EarlyStopping, ModelCheckpoint
 from lightning.pytorch.callbacks.progress.rich_progress import CustomProgress
 from lightning.pytorch.loggers import TensorBoardLogger, WandbLogger
 from lightning.pytorch.utilities import rank_zero_only
@@ -282,12 +282,28 @@ def setup(cfg: Config):
 
     progress, loggers = [], []
 
+    early_stopping = EarlyStopping(
+        monitor="val/map50",         # Ajusta esto al nombre correcto de tu métrica
+        patience=15,                # Puedes ajustar el número de épocas sin mejora
+        mode="min",                 # "min" para pérdida, "max" si usas tipo AP/Accuracy
+        verbose=True
+    )
+    checkpoint = ModelCheckpoint(
+        monitor="val/map50",         # Mismo nombre de la métrica
+        save_top_k=1,
+        mode="min",
+        filename="best_model",
+        verbose=True,
+    )
+    progress.append(early_stopping)
+    progress.append(checkpoint)
+
     if hasattr(cfg.task, "ema") and cfg.task.ema.enable:
         progress.append(EMA(cfg.task.ema.decay))
     if quite:
         logger.setLevel(logging.ERROR)
         return progress, loggers, save_path
-    clear_terminal()
+    
     progress.append(YOLORichProgressBar())
     progress.append(YOLORichModelSummary())
     progress.append(ImageLogger())
