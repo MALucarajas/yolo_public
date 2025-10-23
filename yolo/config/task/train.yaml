@@ -7,21 +7,27 @@ epoch: 100
 
 data:
   batch_size: 32
+  batch_size: 32
   image_size: ${image_size}
   cpu_num: ${cpu_num}
   shuffle: True
   pin_memory: True
   data_augment:
     RandomCrop: 0.05
+    RandomCrop: 0.05
 
 optimizer:
   type: AdamW
+  type: AdamW
   args:
+    lr: 0.001
     lr: 0.001
     weight_decay: 0.0005
 
 loss:
   objective:
+    BCELoss: 2.0
+    BoxLoss: 4.0
     BCELoss: 2.0
     BoxLoss: 4.0
     DFLoss: 1.5

@@ -19,13 +19,13 @@ def main(cfg: Config):
     trainer = Trainer(
         accelerator="auto",
         max_epochs=getattr(cfg.task, "epoch", None),
-        precision="16-mixed",
+        precision="32-true",
         callbacks=callbacks,
         logger=loggers,
-        log_every_n_steps=1,
+        log_every_n_steps=50,
         gradient_clip_val=10,
-        gradient_clip_algorithm="norm",
-        deterministic=True,
+        gradient_clip_algorithm="value",
+        deterministic=False,
         enable_progress_bar=not getattr(cfg, "quite", False),
         default_root_dir=save_path,
     )
