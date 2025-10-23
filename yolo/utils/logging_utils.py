@@ -285,7 +285,7 @@ def setup(cfg: Config):
     early_stopping = EarlyStopping(
         monitor="map_50",         # Ajusta esto al nombre correcto de tu métrica
         patience=15,                # Puedes ajustar el número de épocas sin mejora
-        mode="min",                 # "min" para pérdida, "max" si usas tipo AP/Accuracy
+        mode="max",                 # "min" para pérdida, "max" si usas tipo AP/Accuracy
         verbose=True
     )
     checkpoint = ModelCheckpoint(
