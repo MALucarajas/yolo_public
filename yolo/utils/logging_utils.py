@@ -283,13 +283,13 @@ def setup(cfg: Config):
     progress, loggers = [], []
 
     early_stopping = EarlyStopping(
-        monitor="val/map50",         # Ajusta esto al nombre correcto de tu métrica
+        monitor="map_50",         # Ajusta esto al nombre correcto de tu métrica
         patience=15,                # Puedes ajustar el número de épocas sin mejora
         mode="min",                 # "min" para pérdida, "max" si usas tipo AP/Accuracy
         verbose=True
     )
     checkpoint = ModelCheckpoint(
-        monitor="val/map50",         # Mismo nombre de la métrica
+        monitor="map_50",         # Mismo nombre de la métrica
         save_top_k=1,
         mode="min",
         filename="best_model",
