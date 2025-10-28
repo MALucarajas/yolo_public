@@ -291,7 +291,7 @@ def setup(cfg: Config):
     checkpoint = ModelCheckpoint(
         monitor="map_50",         # Mismo nombre de la métrica
         save_top_k=1,
-        mode="min",
+        mode="max",
         filename="best_model",
         verbose=True,
     )
