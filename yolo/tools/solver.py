@@ -1,6 +1,7 @@
 from math import ceil
 from pathlib import Path
 
+from omegaconf import OmegaConf
 from lightning import LightningModule
 from torchmetrics.detection import MeanAveragePrecision
 
@@ -69,6 +70,7 @@ class TrainModel(ValidateModel):
     def __init__(self, cfg: Config):
         super().__init__(cfg)
         self.cfg = cfg
+        self.save_hyperparameters(OmegaConf.to_container(cfg, resolve=True))
         self.train_loader = create_dataloader(self.cfg.task.data, self.cfg.dataset, self.cfg.task.task)
 
     def setup(self, stage):
